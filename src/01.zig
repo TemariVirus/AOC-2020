@@ -34,7 +34,7 @@ pub fn part1() !i32 {
         try diffs.put(x, {});
     }
 
-    return error.Error;
+    unreachable;
 }
 
 pub fn part2() !i32 {
@@ -57,5 +57,5 @@ pub fn part2() !i32 {
         diffs.clearRetainingCapacity();
     }
 
-    return error.Error;
+    unreachable;
 }
