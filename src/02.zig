@@ -1,6 +1,6 @@
 const std = @import("std");
 const regex = @import("regex").Regex;
-const data = @embedFile("2.txt");
+const data = @embedFile("02.txt");
 
 const Password = struct {
     left: usize,

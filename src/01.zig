@@ -1,5 +1,5 @@
 const std = @import("std");
-const data = @embedFile("1.txt");
+const data = @embedFile("01.txt");
 
 fn parseInput() ![]i32 {
     var lines = std.mem.tokenizeAny(u8, data, "\n");
