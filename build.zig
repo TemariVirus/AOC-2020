@@ -23,6 +23,7 @@ pub fn build(b: *std.Build) void {
         .target = target,
         .optimize = optimize,
     });
+    exe.linkLibC();
 
     // Dependencies
     // https://github.com/tiehuis/zig-regex

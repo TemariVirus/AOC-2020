@@ -1,5 +1,5 @@
 const std = @import("std");
-const day = @import("01.zig");
+const day = @import("11.zig");
 
 pub fn main() !void {
     const stdout_file = std.io.getStdOut().writer();
@@ -8,7 +8,7 @@ pub fn main() !void {
 
     const start_t = std.time.nanoTimestamp();
 
-    try stdout.print("Answer: {!}\n", .{day.part1()});
+    try stdout.print("Answer: {}\n", .{try day.part2()});
 
     const time = std.time.nanoTimestamp() - start_t;
     if (time >= 1_000_000) {
