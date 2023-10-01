@@ -1,5 +1,5 @@
 const std = @import("std");
-const day = @import("12.zig");
+const day = @import("14.zig");
 
 pub fn main() !void {
     const stdout_file = std.io.getStdOut().writer();
