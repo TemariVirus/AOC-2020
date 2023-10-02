@@ -1,5 +1,5 @@
 const std = @import("std");
-const day = @import("14.zig");
+const day = @import("18.zig");
 
 pub fn main() !void {
     const stdout_file = std.io.getStdOut().writer();
@@ -14,7 +14,7 @@ pub fn main() !void {
     if (time >= 1_000_000) {
         try stdout.print("Time taken: {}ms\n", .{@divFloor(time, 1_000_000)});
     } else {
-        try stdout.print("Time taken: {}us\n", .{@divFloor(time, 1_000)});
+        try stdout.print("Time taken: {}μs\n", .{@divFloor(time, 1_000)});
     }
 
     try bw.flush();
