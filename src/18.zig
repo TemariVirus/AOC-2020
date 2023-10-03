@@ -38,12 +38,12 @@ fn splitTerms(expr: []const u8) TermIterator {
     return TermIterator{ .buffer = expr, .idx = 0 };
 }
 
-fn evalNoPrecedence(expr: []const u8) !u64 {
+fn eval(expr: []const u8, precedence: bool) !u64 {
     var terms = splitTerms(expr);
 
     const left_str = terms.next().?;
     var result = if (left_str[0] == '(')
-        try evalNoPrecedence(left_str[1 .. left_str.len - 1])
+        try eval(left_str[1 .. left_str.len - 1], precedence)
     else
         try std.fmt.parseInt(u64, left_str, 10);
 
@@ -51,8 +51,14 @@ fn evalNoPrecedence(expr: []const u8) !u64 {
     while (terms.next()) |term| {
         const op = expr[old_idx - 2];
         switch (op) {
-            '+' => result += try evalNoPrecedence(term),
-            '*' => result *= try evalNoPrecedence(term),
+            '+' => result += try eval(term, precedence),
+            '*' => {
+                if (precedence) {
+                    // Ordering between similar operations is not important
+                    return result * try eval(expr[old_idx..], precedence);
+                }
+                result *= try eval(term, precedence);
+            },
             else => unreachable,
         }
         old_idx = terms.idx;
@@ -65,40 +71,16 @@ pub fn part1() !u64 {
     var lines = std.mem.tokenizeScalar(u8, data, '\n');
     var sum: u64 = 0;
     while (lines.next()) |line| {
-        sum += try evalNoPrecedence(line);
+        sum += try eval(line, false);
     }
     return sum;
-}
-
-fn evalWithPrecedence(expr: []const u8) !u64 {
-    var terms = splitTerms(expr);
-
-    const left_str = terms.next().?;
-    var result = if (left_str[0] == '(')
-        try evalWithPrecedence(left_str[1 .. left_str.len - 1])
-    else
-        try std.fmt.parseInt(u64, left_str, 10);
-
-    var old_idx = terms.idx;
-    while (terms.next()) |term| {
-        const op = expr[old_idx - 2];
-        switch (op) {
-            '+' => result += try evalWithPrecedence(term),
-            // Ordering between similar operations is not important
-            '*' => return result * try evalWithPrecedence(expr[old_idx..]),
-            else => unreachable,
-        }
-        old_idx = terms.idx;
-    }
-
-    return result;
 }
 
 pub fn part2() !u64 {
     var lines = std.mem.tokenizeScalar(u8, data, '\n');
     var sum: u64 = 0;
     while (lines.next()) |line| {
-        sum += try evalWithPrecedence(line);
+        sum += try eval(line, true);
     }
     return sum;
 }
