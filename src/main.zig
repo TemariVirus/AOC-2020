@@ -1,4 +1,5 @@
 const std = @import("std");
+const fmt = std.fmt;
 const day = @import("25.zig");
 
 pub fn main() !void {
@@ -6,16 +7,12 @@ pub fn main() !void {
     var bw = std.io.bufferedWriter(stdout_file);
     const stdout = bw.writer();
 
-    const start_t = std.time.nanoTimestamp();
+    const start_time = std.time.nanoTimestamp();
 
     try stdout.print("Answer: {}\n", .{try day.part1()});
 
-    const time: f32 = @floatFromInt(std.time.nanoTimestamp() - start_t);
-    if (time >= 1_000_000) {
-        try stdout.print("Time taken: {d:.3}ms\n", .{time / 1_000_000});
-    } else {
-        try stdout.print("Time taken: {d:.3}μs\n", .{time / 1_000});
-    }
+    const nanoseconds = @as(i64, @truncate(std.time.nanoTimestamp() - start_time));
+    try stdout.print("Time taken: {}\n", .{fmt.fmtDurationSigned(nanoseconds)});
 
     try bw.flush();
 }
