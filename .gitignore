@@ -1,2 +1,3 @@
+src/day*.txt
 zig-cache/
 zig-out/
